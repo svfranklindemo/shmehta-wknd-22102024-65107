@@ -258,7 +258,7 @@ export default async function decorate(block) {
 
   // Close panels when clicking outside
   document.addEventListener('click', (e) => {
-    if (!searchPanel.contains(e.target) && !searchButton.contains(e.target)) {
+    if ((searchPanel && !searchPanel?.contains(e.target)) && (searchButton && !searchButton?.contains(e.target))) {
       toggleSearch(false);
     }
   });
