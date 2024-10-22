@@ -16,9 +16,9 @@ const isDesktop = window.matchMedia('(min-width: 900px)');
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
-    const navSections = nav.querySelector('.nav-sections');
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
+    const nav = document?.getElementById('nav');
+    const navSections = nav?.querySelector('.nav-sections');
+    const navSectionExpanded = navSections?.querySelector('[aria-expanded="true"]');
     if (navSectionExpanded && isDesktop.matches) {
       // eslint-disable-next-line no-use-before-define
       toggleAllNavSections(navSections);
@@ -52,8 +52,8 @@ function focusNavSection() {
  * @param {Boolean} expanded Whether the element should be expanded or collapsed
  */
 function toggleAllNavSections(sections, expanded = false) {
-  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', expanded);
+  sections?.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
+    section?.setAttribute('aria-expanded', expanded);
   });
 }
 
@@ -71,9 +71,9 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
   button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
   // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
+  const navDrops = navSections?.querySelectorAll('.nav-drop');
   if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
+    navDrops?.forEach((drop) => {
       if (!drop.hasAttribute('tabindex')) {
         drop.setAttribute('role', 'button');
         drop.setAttribute('tabindex', 0);
@@ -81,7 +81,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
       }
     });
   } else {
-    navDrops.forEach((drop) => {
+    navDrops?.forEach((drop) => {
       drop.removeAttribute('role');
       drop.removeAttribute('tabindex');
       drop.removeEventListener('focus', focusNavSection);
@@ -120,14 +120,16 @@ function setActiveTab() {
   const path = matchResult ? matchResult[1] : null;
   const navTabLinks = document.querySelector('.nav-sections ul');
 
-  [...navTabLinks.children].forEach((tab) => {
-    const link = tab.querySelector('a');
-    const linkTitle = link.title.toLowerCase();
-
-    if (linkTitle === path || (linkTitle === 'shop' && ['products', 'equipment', 'search'].includes(path))) {
-      link.classList.add('active');
-    }
-  });
+  if(navTabLinks) {
+    [...navTabLinks.children].forEach((tab) => {
+      const link = tab.querySelector('a');
+      const linkTitle = link.title.toLowerCase();
+  
+      if (linkTitle === path || (linkTitle === 'shop' && ['products', 'equipment', 'search'].includes(path))) {
+        link.classList.add('active');
+      }
+    });
+  }
 
   /* temp - only for the demo since the adventures landing page is the "home page"
   */
@@ -236,11 +238,11 @@ export default async function decorate(block) {
   </div>
   `);
 
-  navTools.append(search);
+  navTools?.append(search);
 
-  const searchPanel = navTools.querySelector('.nav-search-panel');
-  const searchButton = navTools.querySelector('.nav-search-button');
-  const searchInput = searchPanel.querySelector('input');
+  const searchPanel = navTools?.querySelector('.nav-search-panel');
+  const searchButton = navTools?.querySelector('.nav-search-button');
+  const searchInput = searchPanel?.querySelector('input');
 
   function toggleSearch(state) {
     const show = state ?? !searchPanel.classList.contains('nav-panel--show');
@@ -248,7 +250,7 @@ export default async function decorate(block) {
     if (show) searchInput.focus();
   }
 
-  navTools.querySelector('.nav-search-button').addEventListener('click', async () => {
+  navTools?.querySelector('.nav-search-button').addEventListener('click', async () => {
     await import('./searchbar.js');
     document.querySelector('header .nav-search-input').classList.toggle('hidden');
     toggleSearch();
@@ -267,12 +269,12 @@ export default async function decorate(block) {
   hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
       <span class="nav-hamburger-icon"></span>
     </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
+  hamburger?.addEventListener('click', () => toggleMenu(nav, navSections));
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
-  isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+  isDesktop?.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'header-nav-wrapper';
